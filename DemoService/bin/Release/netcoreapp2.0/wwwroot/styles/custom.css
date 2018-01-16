@@ -1,0 +1,21 @@
+﻿#header {
+    display: none !important;
+}
+.swagger-section #header {
+    background-color: #0000f8;
+    padding: 5px;
+    height: 10px;
+    min-width: 775px
+}
+input[name=baseUrl] {
+    display: none !important;
+}
+.logo__title {
+    display: none !important;
+}
+.logo__img {
+    display: none !important;
+}
+#select_document {
+    display: none !important;
+}

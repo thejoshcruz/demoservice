@@ -1,0 +1,33 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:57604/help",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "COUCHBASE_SERVERS": "docker05.concordservicing.com;docker04.concordservicing.com;docker06.concordservicing.com",
+        "COUCHBASE_USERS": "Users",
+        "COUCHBASE_USER": "admin",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "COUCHBASE_PORTFOLIO": "PortfolioState",
+        "COUCHBASE_ACCOUNT": "AccountState",
+        "COUCHBASE_PWD": "SandBox_01"
+      }
+    },
+    "DemoService": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:57605/"
+    }
+  }
+}

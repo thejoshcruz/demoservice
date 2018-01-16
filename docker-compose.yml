@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  demoservice:
+    image: demoservice
+    container_name: demoservice
+    ports:
+      - 9119:80
+    build:
+      context: ./DemoService
+      dockerfile: Dockerfile
+    environment:
+      COUCHBASE_SERVERS: docker05.concordservicing.com;docker04.concordservicing.com;docker06.concordservicing.com
+      COUCHBASE_USER: admin
+      COUCHBASE_PWD: SandBox_01
+      COUCHBASE_PORTFOLIO: PortfolioState
+      COUCHBASE_ACCOUNT: AccountState
+      COUCHBASE_USERS: Users

@@ -1,0 +1,585 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DemoService</name>
+    </assembly>
+    <members>
+        <member name="T:DemoService.Configuration.CouchbaseConfig">
+            <summary>
+            configuration of the couchbase client; offers a singleton instance
+            </summary>
+        </member>
+        <member name="P:DemoService.Configuration.CouchbaseConfig.ServerUris">
+            <summary>
+            the uris to the couchbase server
+            </summary>
+        </member>
+        <member name="P:DemoService.Configuration.CouchbaseConfig.Buckets">
+            <summary>
+            the couchbase buckets to configure with the ClusterHelper
+            </summary>
+        </member>
+        <member name="P:DemoService.Configuration.CouchbaseConfig.Username">
+            <summary>
+            username to access couchbase
+            </summary>
+        </member>
+        <member name="P:DemoService.Configuration.CouchbaseConfig.Password">
+            <summary>
+            password to access couchbase
+            </summary>
+        </member>
+        <member name="P:DemoService.Configuration.CouchbaseConfig.Cluster">
+            <summary>
+            the couchbase cluster instance
+            </summary>
+        </member>
+        <member name="P:DemoService.Configuration.CouchbaseConfig.AccountBucketName">
+            <summary>
+            the name of the account bucket
+            </summary>
+        </member>
+        <member name="P:DemoService.Configuration.CouchbaseConfig.PortfolioBucketName">
+            <summary>
+            the name of the portfolio bucket
+            </summary>
+        </member>
+        <member name="P:DemoService.Configuration.CouchbaseConfig.UserBucketName">
+            <summary>
+            the name of the user bucket
+            </summary>
+        </member>
+        <member name="M:DemoService.Configuration.CouchbaseConfig.Initialize">
+            <summary>
+            initialize the couchbase configuration values (for use when processing actions)
+            </summary>
+        </member>
+        <member name="M:DemoService.Configuration.CouchbaseConfig.Close">
+            <summary>
+            close the ClusterHelper
+            </summary>
+        </member>
+        <member name="M:DemoService.Configuration.CouchbaseConfig.ParseEnvironmentVariables">
+            <summary>
+            parse and import the env variables into the config for use while processing
+            </summary>
+        </member>
+        <member name="T:DemoService.Configuration.CouchbaseConfigManager">
+            <summary>
+            contains the singleton for the couchbase config. logic is elsewhere so it can be tested
+            </summary>
+        </member>
+        <member name="P:DemoService.Configuration.CouchbaseConfigManager.Instance">
+            <summary>
+            singleton instance
+            </summary>
+        </member>
+        <member name="T:DemoService.Controllers.AccountController">
+            <summary>
+            actions on accounts
+            </summary>
+        </member>
+        <member name="M:DemoService.Controllers.AccountController.#ctor(DemoService.Data.IDataProcessor)">
+            <summary>
+            default constructor
+            </summary>
+            <param name="dataProcessor">the processors to use when performing actions with data</param>
+        </member>
+        <member name="M:DemoService.Controllers.AccountController.GetAccountsByPortfolioId(System.String)">
+            <summary>
+            gets the list of accounts for a given portfolio id
+            </summary>
+            <param name="portfolioId">the id of the portfolio for which to pull accounts</param>
+            <returns>Returns a list of <see cref="T:DemoService.Models.AccountState"/></returns>
+            <response code="200">Success</response>
+            <response code="400">Something failed</response>
+        </member>
+        <member name="M:DemoService.Controllers.AccountController.GetAccountsByUserId(System.Int32)">
+            <summary>
+            gets the list of accounts for a given user id
+            </summary>
+            <param name="userId">the id of the user for which to pull accounts</param>
+            <returns>Returns a list of <see cref="T:DemoService.Models.AccountState"/></returns>
+            <response code="200">Success</response>
+            <response code="400">Something failed</response>
+        </member>
+        <member name="T:DemoService.Controllers.AdminController">
+            <summary>
+            the admin controller where all admin stuff lives
+            </summary>
+        </member>
+        <member name="M:DemoService.Controllers.AdminController.#ctor(DemoService.Data.IDataProcessor)">
+            <summary>
+            default constructor
+            </summary>
+            <param name="dataProcessor">the processors to use when performing actions with data</param>
+        </member>
+        <member name="M:DemoService.Controllers.AdminController.Ping(System.String)">
+            <summary>
+            provides the ability to check if the service is up and accepting requests
+            </summary>
+            <remarks>
+            Sample request:
+            
+                GET /Ping
+                {
+                  "echo": woohoo!
+                }
+                
+            </remarks>
+            <param name="echo">input string to return in the response</param>
+            <returns>Returns a response string that includes the input string</returns>
+        </member>
+        <member name="M:DemoService.Controllers.AdminController.Populate(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            adds users, accounts, and portfolios to the proper buckets so we can demo this thing
+            </summary>
+            <remarks>
+            Sample request:
+            
+                POST /Populate
+                {
+                  "portfolioCount": 20,
+                  "accountCount": 500,
+                  "usersCount": 10
+                }
+                
+            </remarks>
+            <param name="accountCount">the number of accounts to add to the AccountState bucket (must be > 0)</param>
+            <param name="portfolioCount">the number of portfolios to add to the PortfolioState bucket (must be > 0)</param>
+            <param name="usersCount">the number of users to add to the Users bucket (must be > 0)</param>
+            <returns>Returns "done" when the records are entered</returns>
+            <response code="200">Success</response>
+            <response code="400">Something failed</response>
+        </member>
+        <member name="T:DemoService.Controllers.BaseController">
+            <summary>
+            base controller
+            </summary>
+        </member>
+        <member name="P:DemoService.Controllers.BaseController.DataProcessor">
+            <summary>
+            used for processing functions on data
+            </summary>
+        </member>
+        <member name="M:DemoService.Controllers.BaseController.#ctor(DemoService.Data.IDataProcessor)">
+            <summary>
+            default constructor
+            </summary>
+            <param name="dataProcessor">the processors to use when performing actions with data</param>
+        </member>
+        <member name="T:DemoService.Controllers.PortfolioController">
+            <summary>
+            actions on portfolios
+            </summary>
+        </member>
+        <member name="M:DemoService.Controllers.PortfolioController.#ctor(DemoService.Data.IDataProcessor)">
+            <summary>
+            default constructor
+            </summary>
+            <param name="dataProcessor">the processors to use when performing actions with data</param>
+        </member>
+        <member name="M:DemoService.Controllers.PortfolioController.GetPortfolios">
+            <summary>
+            get all portfolios 
+            </summary>
+            <remarks>
+            Sample request:
+            
+                GET /GetPortfolios
+                {
+                }
+                
+            </remarks>
+            <returns>Returns a list of portfolios</returns>
+            <response code="200">Success</response>
+            <response code="201">Demonstrating how to show more</response>
+            <response code="400">Something is null</response>
+        </member>
+        <member name="M:DemoService.Controllers.PortfolioController.GetPortfoliosByAggregate">
+            <summary>
+            get all portfolios by aggregating account data
+            </summary>
+            <remarks>
+            Sample request:
+            
+                GET /GetPortfolioAggregates
+                {
+                }
+                
+            </remarks>
+            <returns>Returns a list of portfolios with data generated from aggregated accounts</returns>
+        </member>
+        <member name="T:DemoService.Controllers.UsersController">
+            <summary>
+            actions on users
+            </summary>
+        </member>
+        <member name="M:DemoService.Controllers.UsersController.#ctor(DemoService.Data.IDataProcessor)">
+            <summary>
+            default constructor
+            </summary>
+            <param name="dataProcessor">the processors to use when performing actions with data</param>
+        </member>
+        <member name="M:DemoService.Controllers.UsersController.Authenticate(System.String,System.String)">
+            <summary>
+            authenticates a user with the given credentials
+            </summary>
+            <remarks>
+            Sample request:
+            
+                POST /Authenticate
+                {
+                  "username": "admin",
+                  "password": "emptyhahaha"
+                }
+                
+            </remarks>
+            <param name="username">the username</param>
+            <param name="password">the password</param>
+            <returns>Returns the user profile</returns>
+        </member>
+        <member name="T:DemoService.Data.CouchbaseProcessor">
+            <summary>
+            provides functions to perform on the couchbase cluster
+            </summary>
+        </member>
+        <member name="M:DemoService.Data.CouchbaseProcessor.#ctor(DemoService.Data.IDataClient)">
+            <summary>
+            default constructor
+            </summary>
+            <param name="dataClient">data client to use for data operations</param>
+        </member>
+        <member name="M:DemoService.Data.CouchbaseProcessor.Populate(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            adds interrelated user, portfolio, and account records to the couchbase buckets
+            </summary>
+            <param name="portfolioCount">the number of portfolio records to create</param>
+            <param name="accountCount">the number of account records to create</param>
+            <param name="usersCount">the number of user records to create</param>
+            <returns>Returns "done" when complete</returns>
+        </member>
+        <member name="M:DemoService.Data.CouchbaseProcessor.GetPortfolios">
+            <summary>
+            gets all portfolios from the bucket
+            </summary>
+            <returns>Returns a list of portfolios as an object</returns>
+        </member>
+        <member name="M:DemoService.Data.CouchbaseProcessor.GetPortfoliosByAggregate">
+            <summary>
+            gets all portfolios using the aggregated data from the account bucket
+            </summary>
+            <returns>Returns a list of portfolios as an object</returns>
+        </member>
+        <member name="M:DemoService.Data.CouchbaseProcessor.GetAccountsByPortfolioId(System.String)">
+            <summary>
+            gets all account for a given portfolio 
+            </summary>
+            <param name="portfolioId">the id of the portfolio to retrieve accounts for</param>
+            <returns>Returns a list of accounts</returns>
+        </member>
+        <member name="M:DemoService.Data.CouchbaseProcessor.GetAccountsByUserId(System.Int32)">
+            <summary>
+            gets all account for a given user 
+            </summary>
+            <param name="userId">the id of the user to retrieve accounts for</param>
+            <returns>Returns a list of accounts</returns>
+        </member>
+        <member name="M:DemoService.Data.CouchbaseProcessor.AuthenticateUser(System.String,System.String)">
+            <summary>
+            authenticates a user
+            </summary>
+            <param name="username">the username to authenticate</param>
+            <param name="password">the password to use in authentication</param>
+            <returns></returns>
+        </member>
+        <member name="T:DemoService.Data.IDataClient">
+            <summary>
+            things you can do with a data client
+            </summary>
+        </member>
+        <member name="T:DemoService.Data.IDataProcessor">
+            <summary>
+            contract for data processing functions
+            </summary>
+        </member>
+        <member name="M:DemoService.Data.IDataProcessor.Populate(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            adds interrelated users, accounts, and portfolios to the the proper buckets so I can test this thing
+            </summary>
+        </member>
+        <member name="M:DemoService.Data.IDataProcessor.AuthenticateUser(System.String,System.String)">
+            <summary>
+            authenticates a user
+            </summary>
+        </member>
+        <member name="M:DemoService.Data.IDataProcessor.GetPortfolios">
+            <summary>
+            get all portfolios 
+            </summary>
+        </member>
+        <member name="M:DemoService.Data.IDataProcessor.GetPortfoliosByAggregate">
+            <summary>
+            get all portfolios by aggregating account data
+            </summary>
+        </member>
+        <member name="M:DemoService.Data.IDataProcessor.GetAccountsByPortfolioId(System.String)">
+            <summary>
+            gets the list of accounts for a given portfolio id
+            </summary>
+        </member>
+        <member name="M:DemoService.Data.IDataProcessor.GetAccountsByUserId(System.Int32)">
+            <summary>
+            gets a list of accounts for a given user id
+            </summary>
+        </member>
+        <member name="T:DemoService.Exceptions.ConfigurationException">
+            <summary>
+            exception type for configuration problems
+            </summary>
+        </member>
+        <member name="M:DemoService.Exceptions.ConfigurationException.#ctor(System.String,System.Exception)">
+            <summary>
+            creates exception with the given message and inner exception
+            </summary>
+            <param name="message">the message to include</param>
+            <param name="innerException">the inner exception of the new exception</param>
+        </member>
+        <member name="M:DemoService.Exceptions.ConfigurationException.#ctor(System.String)">
+            <summary>
+            creates exception with the given message
+            </summary>
+            <param name="message">the message to include</param>
+        </member>
+        <member name="T:DemoService.Exceptions.CouchbaseException">
+            <summary>
+            default exception type for couchbase operations
+            </summary>
+        </member>
+        <member name="M:DemoService.Exceptions.CouchbaseException.#ctor(System.String,System.Exception)">
+            <summary>
+            creates exception with the given message and inner exception
+            </summary>
+            <param name="message">the message to include</param>
+            <param name="innerException">the inner exception of the new exception</param>
+        </member>
+        <member name="M:DemoService.Exceptions.CouchbaseException.#ctor(System.String)">
+            <summary>
+            creates exception with the given message
+            </summary>
+            <param name="message">the message to include</param>
+        </member>
+        <member name="T:DemoService.Models.AccountState">
+            <summary>
+            account details as of certain date
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.AccountState.ID">
+            <summary>
+            account identifier
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.AccountState.PortfolioID">
+            <summary>
+            id of the portfolio to which this account belongs
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.AccountState.UserID">
+            <summary>
+            id of the user to which this account belongs
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.AccountState.CurrentBalance">
+            <summary>
+            current balance of the account
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.AccountState.AccountStatus">
+            <summary>
+            status of the account
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.AccountState.AsOfDate">
+            <summary>
+            date this record represents
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.AccountState.LastPaymentDate">
+            <summary>
+            last payment date
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.AccountState.LastPaymentAmount">
+            <summary>
+            amount of last payment
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.AccountState.DaysDelinquent">
+            <summary>
+            number of days delinquent
+            </summary>
+        </member>
+        <member name="M:DemoService.Models.AccountState.Create(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            creates a random instance of AccountState
+            </summary>
+            <param name="id">the id of the new instance</param>
+            <param name="maxPortfolioId">the maximum portfolio id to use when creating the instance</param>
+            <param name="maxUserId">the maximum user id to use when creating the instance</param>
+            <returns></returns>
+        </member>
+        <member name="T:DemoService.Models.AccountStatus">
+            <summary>
+            possible account status
+            </summary>
+        </member>
+        <member name="F:DemoService.Models.AccountStatus.Active">
+            <summary>
+            active
+            </summary>
+        </member>
+        <member name="F:DemoService.Models.AccountStatus.Inactive">
+            <summary>
+            not active (aka inactive, pointdexter)
+            </summary>
+        </member>
+        <member name="F:DemoService.Models.AccountStatus.Canceled">
+            <summary>
+            someone gone and canceled this account, pa!
+            </summary>
+        </member>
+        <member name="T:DemoService.Models.ErrorCodes">
+            <summary>
+            possible error codes
+            </summary>
+        </member>
+        <member name="F:DemoService.Models.ErrorCodes.Unknown">
+            <summary>
+            nobody knows what happened
+            </summary>
+        </member>
+        <member name="F:DemoService.Models.ErrorCodes.CouchbaseProcessing">
+            <summary>
+            something broke while processing with couchbase
+            </summary>
+        </member>
+        <member name="F:DemoService.Models.ErrorCodes.InvalidInputParameters">
+            <summary>
+            invalid input values
+            </summary>
+        </member>
+        <member name="T:DemoService.Models.ErrorDetails">
+            <summary>
+            details about an error returned from an incoming request
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.ErrorDetails.Message">
+            <summary>
+            description of what went wrong
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.ErrorDetails.Code">
+            <summary>
+            the error code 
+            </summary>
+        </member>
+        <member name="T:DemoService.Models.PortfolioState">
+            <summary>
+            portfolio state info
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.PortfolioState.ID">
+            <summary>
+            portfolio id
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.PortfolioState.Name">
+            <summary>
+            name of the portfolio
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.PortfolioState.TotalBalance">
+            <summary>
+            total balance of the portfolio
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.PortfolioState.AccountCount">
+            <summary>
+            number of accounts in the portfolio
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.PortfolioState.AsOfDate">
+            <summary>
+            as of date for this state of the portfolio
+            </summary>
+        </member>
+        <member name="M:DemoService.Models.PortfolioState.Create(System.Int32)">
+            <summary>
+            creates a random portfolio state instance
+            </summary>
+            <param name="id">the id of the new instance</param>
+        </member>
+        <member name="T:DemoService.Models.User">
+            <summary>
+            authorized user info
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.User.ID">
+            <summary>
+            identifier
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.User.Username">
+            <summary>
+            user name
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.User.Password">
+            <summary>
+            user password
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.User.LastLogin">
+            <summary>
+            date and time of last successful login
+            </summary>
+        </member>
+        <member name="T:DemoService.Program">
+            <summary>
+            the main program
+            </summary>
+        </member>
+        <member name="M:DemoService.Program.Main(System.String[])">
+            <summary>
+            main method
+            </summary>
+            <param name="args">input args</param>
+        </member>
+        <member name="M:DemoService.Program.BuildWebHost(System.String[])">
+            <summary>
+            builds the web host
+            </summary>
+            <param name="args">input args</param>
+        </member>
+        <member name="T:DemoService.Startup">
+            <summary>
+            startup service
+            </summary>
+        </member>
+        <member name="M:DemoService.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+            </summary>
+            <param name="services">services collection</param>
+        </member>
+        <member name="M:DemoService.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IApplicationLifetime,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app">the application</param>
+            <param name="lifetime">application lifetime</param>
+            <param name="env">the application environment</param>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,13 @@
+c:\users\jcruz\Source\Repos\DemoService\DemoService\bin\Debug\netcoreapp2.0\DemoService.deps.json
+c:\users\jcruz\Source\Repos\DemoService\DemoService\bin\Debug\netcoreapp2.0\DemoService.runtimeconfig.json
+c:\users\jcruz\Source\Repos\DemoService\DemoService\bin\Debug\netcoreapp2.0\DemoService.runtimeconfig.dev.json
+c:\users\jcruz\Source\Repos\DemoService\DemoService\bin\Debug\netcoreapp2.0\DemoService.dll
+c:\users\jcruz\Source\Repos\DemoService\DemoService\obj\Debug\netcoreapp2.0\DemoService.csproj.CoreCompileInputs.cache
+c:\users\jcruz\Source\Repos\DemoService\DemoService\obj\Debug\netcoreapp2.0\DemoService.AssemblyInfoInputs.cache
+c:\users\jcruz\Source\Repos\DemoService\DemoService\obj\Debug\netcoreapp2.0\DemoService.AssemblyInfo.cs
+c:\users\jcruz\Source\Repos\DemoService\DemoService\bin\Debug\netcoreapp2.0\DemoService.pdb
+c:\users\jcruz\Source\Repos\DemoService\DemoService\obj\Debug\netcoreapp2.0\DemoService.csprojResolveAssemblyReference.cache
+c:\users\jcruz\Source\Repos\DemoService\DemoService\obj\Debug\netcoreapp2.0\DemoService.dll
+c:\users\jcruz\Source\Repos\DemoService\DemoService\obj\Debug\netcoreapp2.0\DemoService.pdb
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\bin\Debug\netcoreapp2.0\DemoService.xml
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\bin\Debug\netcoreapp2.0\wwwroot\styles\custom.css

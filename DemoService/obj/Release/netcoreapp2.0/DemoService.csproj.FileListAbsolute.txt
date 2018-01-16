@@ -1,0 +1,12 @@
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\bin\Release\netcoreapp2.0\DemoService.deps.json
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\bin\Release\netcoreapp2.0\DemoService.runtimeconfig.json
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\bin\Release\netcoreapp2.0\DemoService.runtimeconfig.dev.json
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\bin\Release\netcoreapp2.0\DemoService.dll
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\bin\Release\netcoreapp2.0\DemoService.pdb
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\obj\Release\netcoreapp2.0\DemoService.csproj.CoreCompileInputs.cache
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\obj\Release\netcoreapp2.0\DemoService.AssemblyInfoInputs.cache
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\obj\Release\netcoreapp2.0\DemoService.AssemblyInfo.cs
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\obj\Release\netcoreapp2.0\DemoService.dll
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\obj\Release\netcoreapp2.0\DemoService.pdb
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\bin\Release\netcoreapp2.0\DemoService.xml
+C:\Users\jcruz\Source\Repos\DemoService\DemoService\bin\Release\netcoreapp2.0\wwwroot\styles\custom.css
