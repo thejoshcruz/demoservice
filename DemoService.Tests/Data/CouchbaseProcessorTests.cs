@@ -17,7 +17,7 @@ namespace DemoService.Tests.Data
     {
         private readonly string FakeUsername = "InigoMontoya";
         private readonly string FakePortfolioName = "Portfolio!";
-        private readonly int FakeAccountId = 8675309;
+        private readonly string FakeAccountNumber = "8675309";
 
         private List<dynamic> FakePortfolioList
         {
@@ -27,7 +27,7 @@ namespace DemoService.Tests.Data
                 {
                     AccountCount = 21,
                     AsOfDate = DateTime.Now,
-                    ID = 1,
+                    Number = "1",
                     Name = FakePortfolioName,
                     TotalBalance = 100.0M
                 };
@@ -45,8 +45,9 @@ namespace DemoService.Tests.Data
                     AccountStatus = AccountStatus.Active,
                     AsOfDate = DateTime.Now,
                     CurrentBalance = 100.0M,
-                    ID = FakeAccountId,
-                    PortfolioID = 1
+                    AccountNumber = FakeAccountNumber,
+                    PortfolioNumber = "Portfolio01",
+                    AccountInventory = "Inventory01"
                 };
 
                 return new List<dynamic> { d };
@@ -73,45 +74,6 @@ namespace DemoService.Tests.Data
             get { return new List<dynamic>(); }
         }
 
-        [Test]
-        public void Populate_EncountersDataClientException_ThrowsException()
-        {
-            Mock<IDataClient> mock = new Mock<IDataClient>();
-            mock.Setup(m => m.Upsert(It.IsAny<string>(), It.IsAny<object>())).Throws(new Exception("failure"));
-
-            bool result = false;
-            try
-            {
-                CouchbaseProcessor proc = new CouchbaseProcessor(mock.Object);
-                string response = proc.Populate(1, 1, 1);
-            }
-            catch (CouchbaseException)
-            {
-                result = true;
-            }
-            catch
-            {
-            }
-
-            Assert.IsTrue(result);
-        }
-
-        [Test]
-        public void Populate_WithValidInputs_CallsUpsertTheRightNumberOfTimes()
-        {
-            int portfolioCount = 5;
-            int accountCount = 2;
-            int userCount = 4;
-
-            Mock<IDataClient> mock = new Mock<IDataClient>();
-            mock.Setup(m => m.Upsert(It.IsAny<string>(), It.IsAny<object>()));
-
-            CouchbaseProcessor proc = new CouchbaseProcessor(mock.Object);
-            string response = proc.Populate(portfolioCount, accountCount, userCount);
-
-            mock.Verify(m => m.Upsert(It.IsAny<string>(), It.IsAny<object>()), Times.Exactly(portfolioCount + accountCount + userCount + 1));  // + 1 because we add admin user
-        }
-
 
         [Test]
         public void GetPortfolios_WithValidInputs_ReturnsPortfolioList()
@@ -133,37 +95,17 @@ namespace DemoService.Tests.Data
 
             Assert.AreEqual(name, FakePortfolioName);
         }
+        
 
         [Test]
-        public void GetPortfoliosByAggregate_WithValidInputs_ReturnsPortfolioList()
-        {
-            Mock<IDataClient> mock = new Mock<IDataClient>();
-            mock.Setup(m => m.ExecuteQuery(It.IsAny<string>(), It.IsAny<string>())).Returns(FakePortfolioList);
-
-            CouchbaseProcessor proc = new CouchbaseProcessor(mock.Object);
-            object result = proc.GetPortfoliosByAggregate();
-
-            string name = string.Empty;
-            try
-            {
-                name = ((PortfolioState)((List<dynamic>)result)[0]).Name;
-            }
-            catch
-            {
-            }
-
-            Assert.AreEqual(name, FakePortfolioName);
-        }
-
-        [Test]
-        public void GetAccountsByPortfolioId_WithInvalidPortfolioId_ThrowsArgumentException()
+        public void GetAccountsByPortfolioNumber_WithInvalidPortfolioNumber_ThrowsArgumentException()
         {
             CouchbaseProcessor proc = new CouchbaseProcessor(new CouchbaseDataClient());
             bool result = false;
 
             try
             {
-                object tmp = proc.GetAccountsByPortfolioId(null);
+                object tmp = proc.GetAccountsByPortfolioNumber(null);
             }
             catch (ArgumentException)
             {
@@ -178,45 +120,45 @@ namespace DemoService.Tests.Data
         } 
 
         [Test]
-        public void GetAccountsByPortfolioId_WithValidInputs_ReturnsPortfolioList()
+        public void GetAccountsByPortfolioNumber_WithValidInputs_ReturnsPortfolioList()
         {
             Mock<IDataClient> mock = new Mock<IDataClient>();
             mock.Setup(m => m.ExecuteQuery(It.IsAny<string>(), It.IsAny<string>())).Returns(FakeAccountList);
 
             CouchbaseProcessor proc = new CouchbaseProcessor(mock.Object);
-            object result = proc.GetAccountsByPortfolioId("1");
+            object result = proc.GetAccountsByPortfolioNumber("1");
 
-            int id = 0;
+            string accountNumber = string.Empty;
             try
             {
-                id = ((AccountState)((List<dynamic>)result)[0]).ID;
+                accountNumber = ((AccountState)((List<dynamic>)result)[0]).AccountNumber;
             }
             catch
             {
             }
 
-            Assert.AreEqual(id, FakeAccountId);
+            Assert.AreEqual(accountNumber, FakeAccountNumber);
         }
 
         [Test]
-        public void GetAccountsByUserId_WithValidInputs_ReturnsPortfolioList()
+        public void GetAccountsByUsername_WithValidInputs_ReturnsPortfolioList()
         {
             Mock<IDataClient> mock = new Mock<IDataClient>();
             mock.Setup(m => m.ExecuteQuery(It.IsAny<string>(), It.IsAny<string>())).Returns(FakeAccountList);
 
             CouchbaseProcessor proc = new CouchbaseProcessor(mock.Object);
-            object result = proc.GetAccountsByUserId(1);
+            object result = proc.GetAccountsByUsername("user1");
 
-            int id = 0;
+            string accountNumber = string.Empty;
             try
             {
-                id = ((AccountState)((List<dynamic>)result)[0]).ID;
+                accountNumber = ((AccountState)((List<dynamic>)result)[0]).AccountNumber;
             }
             catch
             {
             }
 
-            Assert.AreEqual(id, FakeAccountId);
+            Assert.AreEqual(accountNumber, FakeAccountNumber);
         }
 
         [Test]

@@ -12,7 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "COUCHBASE_SERVERS": "docker05.concordservicing.com;docker04.concordservicing.com;docker06.concordservicing.com",
+        "COUCHBASE_SERVERS": "docker07.concordservicing.com;docker08.concordservicing.com;docker09.concordservicing.com",
         "COUCHBASE_USERS": "Users",
         "COUCHBASE_USER": "admin",
         "ASPNETCORE_ENVIRONMENT": "Development",

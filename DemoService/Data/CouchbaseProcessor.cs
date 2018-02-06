@@ -22,7 +22,7 @@ namespace DemoService.Data
     /// </summary>
     public class CouchbaseProcessor : IDataProcessor
     {
-        private readonly string SELECTACCOUNT = "select id, portfolioID, currentBalance, accountStatus, asOfDate, lastPaymentDate, lastPaymentAmount, daysDelinquent, userID";
+        private readonly string SELECTACCOUNT = "select AccountNumber, PortfolioNumber, CurrentBalance, AccountStatus, AsOfDate, LastPaymentDate, LastPaymentAmount, DaysDelinquent, Username, AccountInventory";
         private IDataClient DataClient;
         
         /// <summary>
@@ -36,87 +36,13 @@ namespace DemoService.Data
 
 
         /// <summary>
-        /// adds interrelated user, portfolio, and account records to the couchbase buckets
-        /// </summary>
-        /// <param name="portfolioCount">the number of portfolio records to create</param>
-        /// <param name="accountCount">the number of account records to create</param>
-        /// <param name="usersCount">the number of user records to create</param>
-        /// <returns>Returns "done" when complete</returns>
-        public string Populate(int portfolioCount, int accountCount, int usersCount)
-        {
-            string result = "done";
-
-            // create a list of portfolios
-            Dictionary<int, PortfolioState> portfolios = new Dictionary<int, PortfolioState>();
-            for (int p=1; p <= portfolioCount; p++)
-            {
-                portfolios.Add(p, PortfolioState.Create(p));
-            }
-
-            // add accounts, updating the portfolio list as we go
-            List<AccountState> accounts = new List<AccountState>();
-            int accountId = 0;
-            for (int i=0; i < accountCount; i++)
-            {
-                // create an account (randomly assigns to a portfolio)
-                AccountState account = AccountState.Create(accountId++, portfolioCount, usersCount);
-                accounts.Add(account);
-
-                // add the account balance to the chosen portfolio, and increment account count for the portfolio
-                PortfolioState tmp = portfolios[account.PortfolioID];
-                tmp.AccountCount++;
-                tmp.TotalBalance += account.CurrentBalance;
-
-                portfolios[account.PortfolioID] = tmp;
-            }
-
-            #region synchronous add to couchbase
-
-            try
-            {
-                // add users
-                AddUsers(usersCount);
-
-                // now add all accounts
-                accounts.ForEach(account => AddAccount(account));
-
-                // now add all portfolioState records
-                foreach (PortfolioState portfolio in portfolios.Values)
-                {
-                    AddPortfolioState(portfolio);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new CouchbaseException($"Populate failed: {ex.Message}", ex);
-            }
-
-            #endregion
-
-
-            return result;
-        }
-
-        /// <summary>
         /// gets all portfolios from the bucket
         /// </summary>
         /// <returns>Returns a list of portfolios as an object</returns>
         public object GetPortfolios()
         {
             string name = CouchbaseConfigManager.Instance.PortfolioBucketName;
-            string query = $"select id, accountCount, name, totalBalance, asOfDate, debug from {name}";
-
-            return DataClient.ExecuteQuery(name, query);
-        }
-
-        /// <summary>
-        /// gets all portfolios using the aggregated data from the account bucket
-        /// </summary>
-        /// <returns>Returns a list of portfolios as an object</returns>
-        public object GetPortfoliosByAggregate()
-        {
-            string name = CouchbaseConfigManager.Instance.AccountBucketName;
-            string query = $"select portfolioID as id, TRUNC(SUM(currentBalance),2) as totalBalance, \"Portfolio \" || TOSTRING(portfolioID) as name, COUNT(id) as accountCount  from {name} GROUP BY portfolioID";
+            string query = $"select PortfolioNumber, AccountCount, Name, TotalBalance, AsOfDate, Debug from {name}";
 
             return DataClient.ExecuteQuery(name, query);
         }
@@ -124,17 +50,17 @@ namespace DemoService.Data
         /// <summary>
         /// gets all account for a given portfolio 
         /// </summary>
-        /// <param name="portfolioId">the id of the portfolio to retrieve accounts for</param>
+        /// <param name="portfolioNumber">the number of the portfolio to retrieve accounts for</param>
         /// <returns>Returns a list of accounts</returns>
-        public object GetAccountsByPortfolioId(string portfolioId)
+        public object GetAccountsByPortfolioNumber(string portfolioNumber)
         {
-            if (String.IsNullOrEmpty(portfolioId))
+            if (String.IsNullOrEmpty(portfolioNumber))
             {
-                throw new ArgumentException("invalid or null portfolio id");
+                throw new ArgumentException("invalid or null portfolio number");
             }
 
             string name = CouchbaseConfigManager.Instance.AccountBucketName;
-            string query = $"{SELECTACCOUNT} from {name} WHERE portfolioID = {portfolioId}";
+            string query = $"{SELECTACCOUNT} from {name} WHERE PortfolioNumber = '{portfolioNumber}'";
 
             return DataClient.ExecuteQuery(name, query);
         }
@@ -142,12 +68,17 @@ namespace DemoService.Data
         /// <summary>
         /// gets all account for a given user 
         /// </summary>
-        /// <param name="userId">the id of the user to retrieve accounts for</param>
+        /// <param name="username">the name of the user to retrieve accounts for</param>
         /// <returns>Returns a list of accounts</returns>
-        public object GetAccountsByUserId(int userId)
+        public object GetAccountsByUsername(string username)
         {
+            if (String.IsNullOrEmpty(username))
+            {
+                throw new ArgumentException("invalid or null username");
+            }
+
             string name = CouchbaseConfigManager.Instance.AccountBucketName;
-            string query = $"{SELECTACCOUNT} from {name} WHERE userID = {userId}";
+            string query = $"{SELECTACCOUNT} from {name} WHERE Username = '{username}'";
 
             return DataClient.ExecuteQuery(name, query);
         }
@@ -167,7 +98,7 @@ namespace DemoService.Data
             }
 
             string name = CouchbaseConfigManager.Instance.UserBucketName;
-            string query = $"select id, username, lastLogin from {name} where username = '{username}' and pwd = '{password}'";
+            string query = $"select username, lastLogin from {name} where username = '{username}' and pwd = '{password}'";
 
             List<dynamic> results = DataClient.ExecuteQuery(name, query);
             if (results.Count != 1)

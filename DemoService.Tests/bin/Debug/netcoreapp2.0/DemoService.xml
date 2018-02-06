@@ -85,20 +85,20 @@
             </summary>
             <param name="dataProcessor">the processors to use when performing actions with data</param>
         </member>
-        <member name="M:DemoService.Controllers.AccountController.GetAccountsByPortfolioId(System.String)">
+        <member name="M:DemoService.Controllers.AccountController.GetAccountsByPortfolioNumber(System.String)">
             <summary>
             gets the list of accounts for a given portfolio id
             </summary>
-            <param name="portfolioId">the id of the portfolio for which to pull accounts</param>
+            <param name="portfolioNumber">the number of the portfolio for which to pull accounts</param>
             <returns>Returns a list of <see cref="T:DemoService.Models.AccountState"/></returns>
             <response code="200">Success</response>
             <response code="400">Something failed</response>
         </member>
-        <member name="M:DemoService.Controllers.AccountController.GetAccountsByUserId(System.Int32)">
+        <member name="M:DemoService.Controllers.AccountController.GetAccountsByUsername(System.String)">
             <summary>
             gets the list of accounts for a given user id
             </summary>
-            <param name="userId">the id of the user for which to pull accounts</param>
+            <param name="username">the name of the user for which to pull accounts</param>
             <returns>Returns a list of <see cref="T:DemoService.Models.AccountState"/></returns>
             <response code="200">Success</response>
             <response code="400">Something failed</response>
@@ -129,28 +129,6 @@
             </remarks>
             <param name="echo">input string to return in the response</param>
             <returns>Returns a response string that includes the input string</returns>
-        </member>
-        <member name="M:DemoService.Controllers.AdminController.Populate(System.Int32,System.Int32,System.Int32)">
-            <summary>
-            adds users, accounts, and portfolios to the proper buckets so we can demo this thing
-            </summary>
-            <remarks>
-            Sample request:
-            
-                POST /Populate
-                {
-                  "portfolioCount": 20,
-                  "accountCount": 500,
-                  "usersCount": 10
-                }
-                
-            </remarks>
-            <param name="accountCount">the number of accounts to add to the AccountState bucket (must be > 0)</param>
-            <param name="portfolioCount">the number of portfolios to add to the PortfolioState bucket (must be > 0)</param>
-            <param name="usersCount">the number of users to add to the Users bucket (must be > 0)</param>
-            <returns>Returns "done" when the records are entered</returns>
-            <response code="200">Success</response>
-            <response code="400">Something failed</response>
         </member>
         <member name="T:DemoService.Controllers.BaseController">
             <summary>
@@ -196,20 +174,6 @@
             <response code="201">Demonstrating how to show more</response>
             <response code="400">Something is null</response>
         </member>
-        <member name="M:DemoService.Controllers.PortfolioController.GetPortfoliosByAggregate">
-            <summary>
-            get all portfolios by aggregating account data
-            </summary>
-            <remarks>
-            Sample request:
-            
-                GET /GetPortfolioAggregates
-                {
-                }
-                
-            </remarks>
-            <returns>Returns a list of portfolios with data generated from aggregated accounts</returns>
-        </member>
         <member name="T:DemoService.Controllers.UserController">
             <summary>
             actions on a user
@@ -250,39 +214,24 @@
             </summary>
             <param name="dataClient">data client to use for data operations</param>
         </member>
-        <member name="M:DemoService.Data.CouchbaseProcessor.Populate(System.Int32,System.Int32,System.Int32)">
-            <summary>
-            adds interrelated user, portfolio, and account records to the couchbase buckets
-            </summary>
-            <param name="portfolioCount">the number of portfolio records to create</param>
-            <param name="accountCount">the number of account records to create</param>
-            <param name="usersCount">the number of user records to create</param>
-            <returns>Returns "done" when complete</returns>
-        </member>
         <member name="M:DemoService.Data.CouchbaseProcessor.GetPortfolios">
             <summary>
             gets all portfolios from the bucket
             </summary>
             <returns>Returns a list of portfolios as an object</returns>
         </member>
-        <member name="M:DemoService.Data.CouchbaseProcessor.GetPortfoliosByAggregate">
-            <summary>
-            gets all portfolios using the aggregated data from the account bucket
-            </summary>
-            <returns>Returns a list of portfolios as an object</returns>
-        </member>
-        <member name="M:DemoService.Data.CouchbaseProcessor.GetAccountsByPortfolioId(System.String)">
+        <member name="M:DemoService.Data.CouchbaseProcessor.GetAccountsByPortfolioNumber(System.String)">
             <summary>
             gets all account for a given portfolio 
             </summary>
-            <param name="portfolioId">the id of the portfolio to retrieve accounts for</param>
+            <param name="portfolioNumber">the number of the portfolio to retrieve accounts for</param>
             <returns>Returns a list of accounts</returns>
         </member>
-        <member name="M:DemoService.Data.CouchbaseProcessor.GetAccountsByUserId(System.Int32)">
+        <member name="M:DemoService.Data.CouchbaseProcessor.GetAccountsByUsername(System.String)">
             <summary>
             gets all account for a given user 
             </summary>
-            <param name="userId">the id of the user to retrieve accounts for</param>
+            <param name="username">the name of the user to retrieve accounts for</param>
             <returns>Returns a list of accounts</returns>
         </member>
         <member name="M:DemoService.Data.CouchbaseProcessor.AuthenticateUser(System.String,System.String)">
@@ -303,11 +252,6 @@
             contract for data processing functions
             </summary>
         </member>
-        <member name="M:DemoService.Data.IDataProcessor.Populate(System.Int32,System.Int32,System.Int32)">
-            <summary>
-            adds interrelated users, accounts, and portfolios to the the proper buckets so I can test this thing
-            </summary>
-        </member>
         <member name="M:DemoService.Data.IDataProcessor.AuthenticateUser(System.String,System.String)">
             <summary>
             authenticates a user
@@ -318,19 +262,14 @@
             get all portfolios 
             </summary>
         </member>
-        <member name="M:DemoService.Data.IDataProcessor.GetPortfoliosByAggregate">
+        <member name="M:DemoService.Data.IDataProcessor.GetAccountsByPortfolioNumber(System.String)">
             <summary>
-            get all portfolios by aggregating account data
+            gets the list of accounts for a given portfolio number
             </summary>
         </member>
-        <member name="M:DemoService.Data.IDataProcessor.GetAccountsByPortfolioId(System.String)">
+        <member name="M:DemoService.Data.IDataProcessor.GetAccountsByUsername(System.String)">
             <summary>
-            gets the list of accounts for a given portfolio id
-            </summary>
-        </member>
-        <member name="M:DemoService.Data.IDataProcessor.GetAccountsByUserId(System.Int32)">
-            <summary>
-            gets a list of accounts for a given user id
+            gets a list of accounts for a given username
             </summary>
         </member>
         <member name="T:DemoService.Exceptions.ConfigurationException">
@@ -374,19 +313,19 @@
             account details as of certain date
             </summary>
         </member>
-        <member name="P:DemoService.Models.AccountState.ID">
+        <member name="P:DemoService.Models.AccountState.AccountNumber">
             <summary>
-            account identifier
+            account identifier/number
             </summary>
         </member>
-        <member name="P:DemoService.Models.AccountState.PortfolioID">
+        <member name="P:DemoService.Models.AccountState.PortfolioNumber">
             <summary>
-            id of the portfolio to which this account belongs
+            portfolio identifier/number
             </summary>
         </member>
-        <member name="P:DemoService.Models.AccountState.UserID">
+        <member name="P:DemoService.Models.AccountState.Username">
             <summary>
-            id of the user to which this account belongs
+            the name of the user to which this account belongs
             </summary>
         </member>
         <member name="P:DemoService.Models.AccountState.CurrentBalance">
@@ -417,6 +356,11 @@
         <member name="P:DemoService.Models.AccountState.DaysDelinquent">
             <summary>
             number of days delinquent
+            </summary>
+        </member>
+        <member name="P:DemoService.Models.AccountState.AccountInventory">
+            <summary>
+            description of the account inventory
             </summary>
         </member>
         <member name="M:DemoService.Models.AccountState.Create(System.Int32,System.Int32,System.Int32)">
@@ -488,9 +432,9 @@
             portfolio state info
             </summary>
         </member>
-        <member name="P:DemoService.Models.PortfolioState.ID">
+        <member name="P:DemoService.Models.PortfolioState.Number">
             <summary>
-            portfolio id
+            portfolio number
             </summary>
         </member>
         <member name="P:DemoService.Models.PortfolioState.Name">
@@ -513,11 +457,11 @@
             as of date for this state of the portfolio
             </summary>
         </member>
-        <member name="M:DemoService.Models.PortfolioState.Create(System.Int32)">
+        <member name="M:DemoService.Models.PortfolioState.Create(System.String)">
             <summary>
             creates a random portfolio state instance
             </summary>
-            <param name="id">the id of the new instance</param>
+            <param name="number">the number of the new instance</param>
         </member>
         <member name="T:DemoService.Models.User">
             <summary>

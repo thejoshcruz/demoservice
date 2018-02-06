@@ -11,11 +11,6 @@ namespace DemoService.Data
     public interface IDataProcessor
     {
         /// <summary>
-        /// adds interrelated users, accounts, and portfolios to the the proper buckets so I can test this thing
-        /// </summary>
-        string Populate(int portfolioCount, int accountCount, int usersCount);
-
-        /// <summary>
         /// authenticates a user
         /// </summary>
         object AuthenticateUser(string username, string password);
@@ -24,20 +19,15 @@ namespace DemoService.Data
         /// get all portfolios 
         /// </summary>
         object GetPortfolios();
+        
+        /// <summary>
+        /// gets the list of accounts for a given portfolio number
+        /// </summary>
+        object GetAccountsByPortfolioNumber(string portfolioNumber);
 
         /// <summary>
-        /// get all portfolios by aggregating account data
+        /// gets a list of accounts for a given username
         /// </summary>
-        object GetPortfoliosByAggregate();
-
-        /// <summary>
-        /// gets the list of accounts for a given portfolio id
-        /// </summary>
-        object GetAccountsByPortfolioId(string portfolioId);
-
-        /// <summary>
-        /// gets a list of accounts for a given user id
-        /// </summary>
-        object GetAccountsByUserId(int userId);
+        object GetAccountsByUsername(string username);
     }
 }

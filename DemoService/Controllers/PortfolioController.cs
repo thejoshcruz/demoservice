@@ -62,38 +62,6 @@ namespace DemoService.Controllers
             }
             return result;
         }
-
-        /// <summary>
-        /// get all portfolios by aggregating account data
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        /// 
-        ///     GET /GetPortfolioAggregates
-        ///     {
-        ///     }
-        ///     
-        /// </remarks>
-        /// <returns>Returns a list of portfolios with data generated from aggregated accounts</returns>
-        [Produces("application/json")]
-        [Route("GetPortfoliosByAggregate")]
-        [HttpGet]
-        public object GetPortfoliosByAggregate()
-        {
-            object result;
-            try
-            {
-                result = Ok(DataProcessor.GetPortfoliosByAggregate());
-            }
-            catch (Exception ex)
-            {
-                result = BadRequest(
-                    new ErrorDetails {
-                        Message = ex.Message,
-                        Code = (int)ErrorCodes.CouchbaseProcessing }
-                    );
-            }
-            return result;
-        }
+        
     }
 }

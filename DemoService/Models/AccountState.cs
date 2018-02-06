@@ -12,21 +12,21 @@ namespace DemoService.Models
     public class AccountState
     {
         /// <summary>
-        /// account identifier
+        /// account identifier/number
         /// </summary>
         [Required]
-        public int ID { get; set; }
+        public string AccountNumber { get; set; }
 
         /// <summary>
-        /// id of the portfolio to which this account belongs
+        /// portfolio identifier/number
         /// </summary>
-        public int PortfolioID { get; set; }
+        public string PortfolioNumber { get; set; }
 
         /// <summary>
-        /// id of the user to which this account belongs
+        /// the name of the user to which this account belongs
         /// </summary>
-        public int UserID { get; set; }
-
+        public string Username { get; set; }
+        
         /// <summary>
         /// current balance of the account
         /// </summary>
@@ -57,6 +57,11 @@ namespace DemoService.Models
         /// </summary>
         public int DaysDelinquent { get; set; }
 
+        /// <summary>
+        /// description of the account inventory
+        /// </summary>
+        public string AccountInventory { get; set; }
+
 
         /// <summary>
         /// creates a random instance of AccountState
@@ -84,15 +89,16 @@ namespace DemoService.Models
 
             AccountState account = new AccountState
             {
-                ID = id,
-                PortfolioID = random.Next(1, maxPortfolioId+1),
-                UserID = random.Next(1, maxUserId+1),
+                AccountNumber = (10000000000 + id).ToString(),
+                PortfolioNumber = "Portfolio" + random.Next(1, maxPortfolioId + 1),
+                Username = "User" + random.Next(1, maxUserId + 1),
                 CurrentBalance = Math.Round(2000 * (decimal)random.NextDouble(), 2),
                 LastPaymentAmount = Math.Round(600 * (decimal)random.NextDouble(), 2),
                 LastPaymentDate = lastPayDate,
                 DaysDelinquent = daysDelinq,
-                AccountStatus = (AccountStatus)random.Next(0,2),
-                AsOfDate = DateTime.Now
+                AccountStatus = (AccountStatus)random.Next(0, 2),
+                AsOfDate = DateTime.Now,
+                AccountInventory = "Inventory" + id
             };
             return account;
         }

@@ -27,21 +27,21 @@ namespace DemoService.Controllers
         /// <summary>
         /// gets the list of accounts for a given portfolio id
         /// </summary>
-        /// <param name="portfolioId">the id of the portfolio for which to pull accounts</param>
+        /// <param name="portfolioNumber">the number of the portfolio for which to pull accounts</param>
         /// <returns>Returns a list of <see cref="AccountState"/></returns>
         /// <response code="200">Success</response>
         /// <response code="400">Something failed</response>
         [Produces("application/json")]
-        [Route("GetAccountsByPortfolioId")]
+        [Route("GetAccountsByPortfolioNumber")]
         [HttpGet]
         [ProducesResponseType(typeof(ErrorDetails), 400)]
-        public object GetAccountsByPortfolioId([FromQuery] string portfolioId)
+        public object GetAccountsByPortfolioNumber([FromQuery] string portfolioNumber)
         {
-            if (String.IsNullOrEmpty(portfolioId))
+            if (String.IsNullOrEmpty(portfolioNumber))
             {
                 return BadRequest(
                     new ErrorDetails {
-                        Message = "portfolioId cannot be null or empty",
+                        Message = "portfolioNumber cannot be null or empty",
                         Code = (int)ErrorCodes.InvalidInputParameters}
                     );
             }
@@ -49,7 +49,7 @@ namespace DemoService.Controllers
             object result = null;
             try
             {
-                result = Ok(DataProcessor.GetAccountsByPortfolioId(portfolioId));
+                result = Ok(DataProcessor.GetAccountsByPortfolioNumber(portfolioNumber));
             }
             catch (Exception ex)
             {
@@ -65,22 +65,22 @@ namespace DemoService.Controllers
         /// <summary>
         /// gets the list of accounts for a given user id
         /// </summary>
-        /// <param name="userId">the id of the user for which to pull accounts</param>
+        /// <param name="username">the name of the user for which to pull accounts</param>
         /// <returns>Returns a list of <see cref="AccountState"/></returns>
         /// <response code="200">Success</response>
         /// <response code="400">Something failed</response>
         [Produces("application/json")]
-        [Route("GetAccountsByUserId")]
+        [Route("GetAccountsByUsername")]
         [HttpGet]
         [ProducesResponseType(typeof(ErrorDetails), 400)]
-        public object GetAccountsByUserId([FromQuery] int userId)
+        public object GetAccountsByUsername([FromQuery] string username)
         {
-            if (userId <= 0)
+            if (String.IsNullOrEmpty(username))
             {
                 return BadRequest(
                     new ErrorDetails
                     {
-                        Message = "userId cannot be <= 0",
+                        Message = "invalid or empty username",
                         Code = (int)ErrorCodes.InvalidInputParameters
                     }
                     );
@@ -89,7 +89,7 @@ namespace DemoService.Controllers
             object result = null;
             try
             {
-                result = Ok(DataProcessor.GetAccountsByUserId(userId));
+                result = Ok(DataProcessor.GetAccountsByUsername(username));
             }
             catch (Exception ex)
             {

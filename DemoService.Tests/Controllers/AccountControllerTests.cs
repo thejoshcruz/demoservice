@@ -15,6 +15,8 @@ namespace DemoService.Tests.Controllers
     [TestFixture]
     public class AccountControllerTests : BaseTests
     {
+        private readonly string FakeAccountNumber = "8675309";
+
         private AccountState FakeAccount
         {
             get
@@ -24,8 +26,9 @@ namespace DemoService.Tests.Controllers
                     AccountStatus = AccountStatus.Active,
                     AsOfDate = DateTime.Now,
                     CurrentBalance = 100.0M,
-                    ID = 1,
-                    PortfolioID = 1,
+                    AccountNumber = FakeAccountNumber,
+                    PortfolioNumber = "Portfolio01",
+                    AccountInventory = "Inventory01",
                     LastPaymentAmount = 100.0M,
                     LastPaymentDate = DateTime.Now.Subtract(new TimeSpan(5,0,0,0)),
                     DaysDelinquent = 2
@@ -35,40 +38,40 @@ namespace DemoService.Tests.Controllers
 
 
         [Test]
-        public void GetAccountsByPortfolioId_InvalidInput_ReturnsBadRequest()
+        public void GetAccountsByPortfolioNumber_InvalidInput_ReturnsBadRequest()
         {
             AccountController controller = new AccountController(new CouchbaseProcessor(new CouchbaseDataClient()));
 
-            object result = controller.GetAccountsByPortfolioId(null);
+            object result = controller.GetAccountsByPortfolioNumber(null);
 
             Assert.IsInstanceOf(typeof(BadRequestObjectResult), result);
         }
 
 
         [Test]
-        public void GetAccountsByPortfolioId_EncountersException_ReturnsBadRequest()
+        public void GetAccountsByPortfolioNumber_EncountersException_ReturnsBadRequest()
         {
             Mock<IDataProcessor> mock = new Mock<IDataProcessor>();
-            mock.Setup(m => m.GetAccountsByPortfolioId(It.IsAny<string>())).Throws(new Exception("dogs and cats, living together!"));
+            mock.Setup(m => m.GetAccountsByPortfolioNumber(It.IsAny<string>())).Throws(new Exception("dogs and cats, living together!"));
 
             AccountController controller = new AccountController(mock.Object);
 
-            object result = controller.GetAccountsByPortfolioId("1");
+            object result = controller.GetAccountsByPortfolioNumber("1");
             int code = ParseBadRequestForErrorCode(result);
 
             Assert.AreEqual(code, (int)ErrorCodes.CouchbaseProcessing);
         }
 
         [Test]
-        public void GetAccountsByPortfolioId_WithValidInputs_ReturnsAccounts()
+        public void GetAccountsByPortfolioNumber_WithValidInputs_ReturnsAccounts()
         {
             List<AccountState> list = new List<AccountState> { FakeAccount };
 
             Mock<IDataProcessor> mock = new Mock<IDataProcessor>();
-            mock.Setup(m => m.GetAccountsByPortfolioId(It.IsAny<string>())).Returns(list as object);
+            mock.Setup(m => m.GetAccountsByPortfolioNumber(It.IsAny<string>())).Returns(list as object);
 
             AccountController controller = new AccountController(mock.Object);
-            object result = controller.GetAccountsByPortfolioId("1");
+            object result = controller.GetAccountsByPortfolioNumber("1");
 
             object accounts = null;
             if (result is OkObjectResult)
@@ -81,39 +84,39 @@ namespace DemoService.Tests.Controllers
 
 
         [Test]
-        public void GetAccountsByUserId_InvalidInput_ReturnsBadRequest()
+        public void GetAccountsByUsername_InvalidInput_ReturnsBadRequest()
         {
             AccountController controller = new AccountController(new CouchbaseProcessor(new CouchbaseDataClient()));
 
-            object result = controller.GetAccountsByUserId(0);
+            object result = controller.GetAccountsByUsername(null);
 
             Assert.IsInstanceOf(typeof(BadRequestObjectResult), result);
         }
 
         [Test]
-        public void GetAccountsByUserId_EncountersException_ReturnsBadRequest()
+        public void GetAccountsByUsername_EncountersException_ReturnsBadRequest()
         {
             Mock<IDataProcessor> mock = new Mock<IDataProcessor>();
-            mock.Setup(m => m.GetAccountsByUserId(It.IsAny<int>())).Throws(new Exception("i'm you're huckleberry"));
+            mock.Setup(m => m.GetAccountsByUsername(It.IsAny<string>())).Throws(new Exception("i'm you're huckleberry"));
 
             AccountController controller = new AccountController(mock.Object);
 
-            object result = controller.GetAccountsByUserId(1);
+            object result = controller.GetAccountsByUsername("user1");
             int code = ParseBadRequestForErrorCode(result);
 
             Assert.AreEqual(code, (int)ErrorCodes.CouchbaseProcessing);
         }
 
         [Test]
-        public void GetAccountsByUserId_WithValidInputs_ReturnsAccounts()
+        public void GetAccountsByUsername_WithValidInputs_ReturnsAccounts()
         {
             List<AccountState> list = new List<AccountState> { FakeAccount };
 
             Mock<IDataProcessor> mock = new Mock<IDataProcessor>();
-            mock.Setup(m => m.GetAccountsByUserId(It.IsAny<int>())).Returns(list as object);
+            mock.Setup(m => m.GetAccountsByUsername(It.IsAny<string>())).Returns(list as object);
 
             AccountController controller = new AccountController(mock.Object);
-            object result = controller.GetAccountsByUserId(1);
+            object result = controller.GetAccountsByUsername("user1");
 
             object accounts = null;
             if (result is OkObjectResult)

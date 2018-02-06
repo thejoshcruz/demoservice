@@ -11,9 +11,9 @@ namespace DemoService.Models
     public class PortfolioState
     {
         /// <summary>
-        /// portfolio id
+        /// portfolio number
         /// </summary>
-        public long ID { get; set; }
+        public string Number { get; set; }
 
         /// <summary>
         /// name of the portfolio
@@ -38,13 +38,13 @@ namespace DemoService.Models
         /// <summary>
         /// creates a random portfolio state instance
         /// </summary>
-        /// <param name="id">the id of the new instance</param>
-        public static PortfolioState Create(int id)
+        /// <param name="number">the number of the new instance</param>
+        public static PortfolioState Create(string number)
         {
             PortfolioState p = new PortfolioState
             {
-                ID = id,
-                Name = "Portfolio " + id,
+                Number = number,
+                Name = "Portfolio " + number,
                 AsOfDate = DateTime.Now,
                 AccountCount = 0,
                 TotalBalance = decimal.Zero
