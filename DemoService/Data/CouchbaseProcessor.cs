@@ -22,7 +22,7 @@ namespace DemoService.Data
     /// </summary>
     public class CouchbaseProcessor : IDataProcessor
     {
-        private readonly string SELECTACCOUNT = "select AccountNumber, PortfolioNumber, CurrentBalance, AccountStatus, AsOfDate, LastPaymentDate, LastPaymentAmount, DaysDelinquent, Username, AccountInventory";
+        private readonly string SELECTACCOUNT = "select AccountNumber, PortfolioName, CurrentBalance, AccountStatus, AsOfDate, LastPaymentDate, LastPaymentAmount, DaysDelinquent, Username, AccountInventory";
         private IDataClient DataClient;
         
         /// <summary>
@@ -42,7 +42,7 @@ namespace DemoService.Data
         public object GetPortfolios()
         {
             string name = CouchbaseConfigManager.Instance.PortfolioBucketName;
-            string query = $"select PortfolioNumber, AccountCount, Name, TotalBalance, AsOfDate, Debug from {name}";
+            string query = $"select PortfolioName, AccountCount, Name, TotalBalance, AsOfDate, Debug from {name}";
 
             return DataClient.ExecuteQuery(name, query);
         }
@@ -50,17 +50,17 @@ namespace DemoService.Data
         /// <summary>
         /// gets all account for a given portfolio 
         /// </summary>
-        /// <param name="portfolioNumber">the number of the portfolio to retrieve accounts for</param>
+        /// <param name="portfolioName">the name of the portfolio to retrieve accounts for</param>
         /// <returns>Returns a list of accounts</returns>
-        public object GetAccountsByPortfolioNumber(string portfolioNumber)
+        public object GetAccountsByPortfolioName(string portfolioName)
         {
-            if (String.IsNullOrEmpty(portfolioNumber))
+            if (String.IsNullOrEmpty(portfolioName))
             {
                 throw new ArgumentException("invalid or null portfolio number");
             }
 
             string name = CouchbaseConfigManager.Instance.AccountBucketName;
-            string query = $"{SELECTACCOUNT} from {name} WHERE PortfolioNumber = '{portfolioNumber}'";
+            string query = $"{SELECTACCOUNT} from {name} WHERE PortfolioName = '{portfolioName}'";
 
             return DataClient.ExecuteQuery(name, query);
         }

@@ -21,9 +21,9 @@ namespace DemoService.Data
         object GetPortfolios();
         
         /// <summary>
-        /// gets the list of accounts for a given portfolio number
+        /// gets the list of accounts for a given portfolio
         /// </summary>
-        object GetAccountsByPortfolioNumber(string portfolioNumber);
+        object GetAccountsByPortfolioName(string portfolioName);
 
         /// <summary>
         /// gets a list of accounts for a given username

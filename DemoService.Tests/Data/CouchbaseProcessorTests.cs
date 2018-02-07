@@ -46,7 +46,7 @@ namespace DemoService.Tests.Data
                     AsOfDate = DateTime.Now,
                     CurrentBalance = 100.0M,
                     AccountNumber = FakeAccountNumber,
-                    PortfolioNumber = "Portfolio01",
+                    PortfolioName = "Portfolio01",
                     AccountInventory = "Inventory01"
                 };
 
@@ -98,14 +98,14 @@ namespace DemoService.Tests.Data
         
 
         [Test]
-        public void GetAccountsByPortfolioNumber_WithInvalidPortfolioNumber_ThrowsArgumentException()
+        public void GetAccountsByPortfolioName_WithInvalidPortfolioName_ThrowsArgumentException()
         {
             CouchbaseProcessor proc = new CouchbaseProcessor(new CouchbaseDataClient());
             bool result = false;
 
             try
             {
-                object tmp = proc.GetAccountsByPortfolioNumber(null);
+                object tmp = proc.GetAccountsByPortfolioName(null);
             }
             catch (ArgumentException)
             {
@@ -120,13 +120,13 @@ namespace DemoService.Tests.Data
         } 
 
         [Test]
-        public void GetAccountsByPortfolioNumber_WithValidInputs_ReturnsPortfolioList()
+        public void GetAccountsByPortfolioName_WithValidInputs_ReturnsPortfolioList()
         {
             Mock<IDataClient> mock = new Mock<IDataClient>();
             mock.Setup(m => m.ExecuteQuery(It.IsAny<string>(), It.IsAny<string>())).Returns(FakeAccountList);
 
             CouchbaseProcessor proc = new CouchbaseProcessor(mock.Object);
-            object result = proc.GetAccountsByPortfolioNumber("1");
+            object result = proc.GetAccountsByPortfolioName("1");
 
             string accountNumber = string.Empty;
             try

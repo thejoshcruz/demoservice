@@ -25,23 +25,23 @@ namespace DemoService.Controllers
         { }
 
         /// <summary>
-        /// gets the list of accounts for a given portfolio id
+        /// gets the list of accounts for a given portfolio
         /// </summary>
-        /// <param name="portfolioNumber">the number of the portfolio for which to pull accounts</param>
+        /// <param name="portfolioName">the name of the portfolio for which to pull accounts</param>
         /// <returns>Returns a list of <see cref="AccountState"/></returns>
         /// <response code="200">Success</response>
         /// <response code="400">Something failed</response>
         [Produces("application/json")]
-        [Route("GetAccountsByPortfolioNumber")]
+        [Route("GetAccountsByPortfolioName")]
         [HttpGet]
         [ProducesResponseType(typeof(ErrorDetails), 400)]
-        public object GetAccountsByPortfolioNumber([FromQuery] string portfolioNumber)
+        public object GetAccountsByPortfolioName([FromQuery] string portfolioName)
         {
-            if (String.IsNullOrEmpty(portfolioNumber))
+            if (String.IsNullOrEmpty(portfolioName))
             {
                 return BadRequest(
                     new ErrorDetails {
-                        Message = "portfolioNumber cannot be null or empty",
+                        Message = "portfolioName cannot be null or empty",
                         Code = (int)ErrorCodes.InvalidInputParameters}
                     );
             }
@@ -49,7 +49,7 @@ namespace DemoService.Controllers
             object result = null;
             try
             {
-                result = Ok(DataProcessor.GetAccountsByPortfolioNumber(portfolioNumber));
+                result = Ok(DataProcessor.GetAccountsByPortfolioName(portfolioName));
             }
             catch (Exception ex)
             {

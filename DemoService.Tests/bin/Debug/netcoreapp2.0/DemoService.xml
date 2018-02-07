@@ -85,11 +85,11 @@
             </summary>
             <param name="dataProcessor">the processors to use when performing actions with data</param>
         </member>
-        <member name="M:DemoService.Controllers.AccountController.GetAccountsByPortfolioNumber(System.String)">
+        <member name="M:DemoService.Controllers.AccountController.GetAccountsByPortfolioName(System.String)">
             <summary>
-            gets the list of accounts for a given portfolio id
+            gets the list of accounts for a given portfolio
             </summary>
-            <param name="portfolioNumber">the number of the portfolio for which to pull accounts</param>
+            <param name="portfolioName">the name of the portfolio for which to pull accounts</param>
             <returns>Returns a list of <see cref="T:DemoService.Models.AccountState"/></returns>
             <response code="200">Success</response>
             <response code="400">Something failed</response>
@@ -220,11 +220,11 @@
             </summary>
             <returns>Returns a list of portfolios as an object</returns>
         </member>
-        <member name="M:DemoService.Data.CouchbaseProcessor.GetAccountsByPortfolioNumber(System.String)">
+        <member name="M:DemoService.Data.CouchbaseProcessor.GetAccountsByPortfolioName(System.String)">
             <summary>
             gets all account for a given portfolio 
             </summary>
-            <param name="portfolioNumber">the number of the portfolio to retrieve accounts for</param>
+            <param name="portfolioName">the name of the portfolio to retrieve accounts for</param>
             <returns>Returns a list of accounts</returns>
         </member>
         <member name="M:DemoService.Data.CouchbaseProcessor.GetAccountsByUsername(System.String)">
@@ -262,9 +262,9 @@
             get all portfolios 
             </summary>
         </member>
-        <member name="M:DemoService.Data.IDataProcessor.GetAccountsByPortfolioNumber(System.String)">
+        <member name="M:DemoService.Data.IDataProcessor.GetAccountsByPortfolioName(System.String)">
             <summary>
-            gets the list of accounts for a given portfolio number
+            gets the list of accounts for a given portfolio
             </summary>
         </member>
         <member name="M:DemoService.Data.IDataProcessor.GetAccountsByUsername(System.String)">
@@ -318,9 +318,9 @@
             account identifier/number
             </summary>
         </member>
-        <member name="P:DemoService.Models.AccountState.PortfolioNumber">
+        <member name="P:DemoService.Models.AccountState.PortfolioName">
             <summary>
-            portfolio identifier/number
+            portfolio name
             </summary>
         </member>
         <member name="P:DemoService.Models.AccountState.Username">

@@ -18,9 +18,9 @@ namespace DemoService.Models
         public string AccountNumber { get; set; }
 
         /// <summary>
-        /// portfolio identifier/number
+        /// portfolio name
         /// </summary>
-        public string PortfolioNumber { get; set; }
+        public string PortfolioName { get; set; }
 
         /// <summary>
         /// the name of the user to which this account belongs
@@ -90,7 +90,7 @@ namespace DemoService.Models
             AccountState account = new AccountState
             {
                 AccountNumber = (10000000000 + id).ToString(),
-                PortfolioNumber = "Portfolio" + random.Next(1, maxPortfolioId + 1),
+                PortfolioName = "Portfolio" + random.Next(1, maxPortfolioId + 1),
                 Username = "User" + random.Next(1, maxUserId + 1),
                 CurrentBalance = Math.Round(2000 * (decimal)random.NextDouble(), 2),
                 LastPaymentAmount = Math.Round(600 * (decimal)random.NextDouble(), 2),
