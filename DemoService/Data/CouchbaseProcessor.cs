@@ -48,6 +48,18 @@ namespace DemoService.Data
         }
 
         /// <summary>
+        /// gets all portfolios using the aggregated data from the account bucket
+        /// </summary>
+        /// <returns>Returns a list of portfolios as an object</returns>
+        public object GetPortfoliosByAggregate()
+        {
+            string name = CouchbaseConfigManager.Instance.AccountBucketName;
+            string query = $"select PortfolioName, TRUNC(SUM(CurrentBalance),2) as TotalBalance, COUNT(AccountNumber) as AccountCount  from {name} GROUP BY PortfolioName";
+
+            return DataClient.ExecuteQuery(name, query);
+        }
+
+        /// <summary>
         /// gets all account for a given portfolio 
         /// </summary>
         /// <param name="portfolioName">the name of the portfolio to retrieve accounts for</param>

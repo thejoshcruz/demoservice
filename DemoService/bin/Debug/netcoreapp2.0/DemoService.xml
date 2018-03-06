@@ -174,6 +174,20 @@
             <response code="201">Demonstrating how to show more</response>
             <response code="400">Something is null</response>
         </member>
+        <member name="M:DemoService.Controllers.PortfolioController.GetPortfoliosByAggregate">
+            <summary>
+            get all portfolios by aggregating account data
+            </summary>
+            <remarks>
+            Sample request:
+            
+                GET /GetPortfoliosByAggregate
+                {
+                }
+                
+            </remarks>
+            <returns>Returns a list of portfolios with data generated from aggregated accounts</returns>
+        </member>
         <member name="T:DemoService.Controllers.UserController">
             <summary>
             actions on a user
@@ -220,6 +234,12 @@
             </summary>
             <returns>Returns a list of portfolios as an object</returns>
         </member>
+        <member name="M:DemoService.Data.CouchbaseProcessor.GetPortfoliosByAggregate">
+            <summary>
+            gets all portfolios using the aggregated data from the account bucket
+            </summary>
+            <returns>Returns a list of portfolios as an object</returns>
+        </member>
         <member name="M:DemoService.Data.CouchbaseProcessor.GetAccountsByPortfolioName(System.String)">
             <summary>
             gets all account for a given portfolio 
@@ -260,6 +280,11 @@
         <member name="M:DemoService.Data.IDataProcessor.GetPortfolios">
             <summary>
             get all portfolios 
+            </summary>
+        </member>
+        <member name="M:DemoService.Data.IDataProcessor.GetPortfoliosByAggregate">
+            <summary>
+            get all portfolios by aggregating account data
             </summary>
         </member>
         <member name="M:DemoService.Data.IDataProcessor.GetAccountsByPortfolioName(System.String)">

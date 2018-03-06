@@ -19,7 +19,12 @@ namespace DemoService.Data
         /// get all portfolios 
         /// </summary>
         object GetPortfolios();
-        
+
+        /// <summary>
+        /// get all portfolios by aggregating account data
+        /// </summary>
+        object GetPortfoliosByAggregate();
+
         /// <summary>
         /// gets the list of accounts for a given portfolio
         /// </summary>
